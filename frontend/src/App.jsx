@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import './App.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+const API_URL = import.meta.env.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:8000/api`
 const STORAGE_KEY = 'cctv_monitoring_auth'
 const today = new Date().toISOString().slice(0, 10)
 const currentMonth = today.slice(0, 7)

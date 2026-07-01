@@ -45,9 +45,26 @@ npm run dev
 
 Dashboard berjalan di `http://localhost:5173` dan API di `http://localhost:8000/api`.
 
-## Menjalankan Dengan Docker
+## Menjalankan Dengan Docker / Portainer
 
-Pastikan Docker Desktop sudah jalan, lalu dari folder root project:
+Compose bawaan project ini disiapkan untuk Portainer dengan MySQL eksternal pada network `mysql-server_default`.
+
+Deploy via Portainer:
+
+1. Buka **Stacks**.
+2. Klik **Add stack**.
+3. Pilih **Repository**.
+4. Isi repository:
+   ```txt
+   https://github.com/HBBW/cctv-monitoring
+   ```
+5. Compose path:
+   ```txt
+   docker-compose.yml
+   ```
+6. Deploy stack.
+
+Kalau dijalankan lokal dari folder root project:
 
 ```bash
 docker compose up --build
@@ -55,18 +72,16 @@ docker compose up --build
 
 Service yang tersedia:
 
-- Dashboard React: `http://localhost:5173`
+- Dashboard React: `http://localhost`
 - API Laravel: `http://localhost:8000/api`
-- phpMyAdmin: `http://localhost:8080`
-- MySQL: `localhost:3306`
 
-Credential database Docker:
+Konfigurasi database default di Docker:
 
 ```env
-DB_DATABASE=cctv_exception_monitoring
-DB_USERNAME=cctv
-DB_PASSWORD=cctv
-DB_ROOT_PASSWORD=root
+DB_HOST=mysql_native_server
+DB_DATABASE=BMC
+DB_USERNAME=root
+DB_PASSWORD=Ptbmc123
 ```
 
 Container backend otomatis menjalankan:
@@ -77,11 +92,14 @@ Container backend otomatis menjalankan:
 - `php artisan storage:link`
 - `php artisan migrate --seed`
 
-Untuk reset database Docker:
+Kalau nama container/network MySQL berbeda, ubah bagian ini di `docker-compose.yml`:
 
-```bash
-docker compose down -v
-docker compose up --build
+```yaml
+DB_HOST: mysql_native_server
+networks:
+  network_mysql:
+    external: true
+    name: mysql-server_default
 ```
 
 ## Fitur Utama
