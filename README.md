@@ -45,6 +45,45 @@ npm run dev
 
 Dashboard berjalan di `http://localhost:5173` dan API di `http://localhost:8000/api`.
 
+## Menjalankan Dengan Docker
+
+Pastikan Docker Desktop sudah jalan, lalu dari folder root project:
+
+```bash
+docker compose up --build
+```
+
+Service yang tersedia:
+
+- Dashboard React: `http://localhost:5173`
+- API Laravel: `http://localhost:8000/api`
+- phpMyAdmin: `http://localhost:8080`
+- MySQL: `localhost:3306`
+
+Credential database Docker:
+
+```env
+DB_DATABASE=cctv_exception_monitoring
+DB_USERNAME=cctv
+DB_PASSWORD=cctv
+DB_ROOT_PASSWORD=root
+```
+
+Container backend otomatis menjalankan:
+
+- `composer install` jika `vendor/` belum ada
+- copy `.env.example` ke `.env` jika belum ada
+- `php artisan key:generate`
+- `php artisan storage:link`
+- `php artisan migrate --seed`
+
+Untuk reset database Docker:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
 ## Fitur Utama
 
 - Matrix harian 24 jam: CCTV x jam.
