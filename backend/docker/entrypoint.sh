@@ -27,7 +27,7 @@ fwrite(STDERR, "Database is not reachable.\n");
 exit(1);
 '
 
-if ! grep -q '^APP_KEY=base64:' .env 2>/dev/null; then
+if [ -z "$APP_KEY" ] && ! grep -q '^APP_KEY=base64:' .env 2>/dev/null; then
   php artisan key:generate --force
 fi
 

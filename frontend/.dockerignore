@@ -1,4 +1,9 @@
 .env
-dist
 node_modules
+dist
+.git
+.agents
+.codex
+work
+outputs
 npm-debug.log*

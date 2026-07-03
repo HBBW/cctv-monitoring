@@ -6,16 +6,16 @@ services:
     container_name: cctv-monitoring-mysql
     restart: always
     environment:
-      MYSQL_DATABASE: cctv_exception_monitoring
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: cctv
-      MYSQL_PASSWORD: cctv
+      MYSQL_DATABASE: ${DB_DATABASE:-cctv_exception_monitoring}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${DB_USERNAME:-cctv}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-cctv}
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -30,22 +30,25 @@ services:
       mysql:
         condition: service_healthy
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     environment:
-      APP_ENV: local
-      APP_DEBUG: "true"
-      APP_URL: http://localhost:8000
-      FRONTEND_URL: http://localhost
+      APP_ENV: ${APP_ENV:-production}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      APP_KEY: ${APP_KEY:-}
+      APP_URL: ${APP_URL:-http://localhost:8000}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_DATABASE: cctv_exception_monitoring
-      DB_USERNAME: cctv
-      DB_PASSWORD: cctv
+      DB_DATABASE: ${DB_DATABASE:-cctv_exception_monitoring}
+      DB_USERNAME: ${DB_USERNAME:-cctv}
+      DB_PASSWORD: ${DB_PASSWORD:-cctv}
       SESSION_DRIVER: database
       CACHE_STORE: database
       QUEUE_CONNECTION: database
       FILESYSTEM_DISK: public
+    volumes:
+      - backend_public_storage:/var/www/html/storage/app/public
 
   frontend:
     build:
@@ -56,9 +59,9 @@ services:
     depends_on:
       - backend
     ports:
-      - "80:5173"
+      - "${FRONTEND_PORT:-80}:5173"
     environment:
-      VITE_API_URL: http://localhost:8000/api
+      VITE_API_URL: ${VITE_API_URL:-}
 
   phpmyadmin:
     image: phpmyadmin:5
@@ -68,12 +71,13 @@ services:
       mysql:
         condition: service_healthy
     ports:
-      - "8080:80"
+      - "${PHPMYADMIN_PORT:-8080}:80"
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
       PMA_USER: root
-      PMA_PASSWORD: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-root}
 
 volumes:
   mysql_data:
+  backend_public_storage:

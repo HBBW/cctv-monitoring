@@ -60,14 +60,19 @@ Service yang tersedia:
 - phpMyAdmin: `http://localhost:8080`
 - MySQL: `localhost:3306`
 
-Konfigurasi database default di Docker:
+Konfigurasi default Docker:
 
 ```env
+APP_URL=http://localhost:8000
+FRONTEND_URL=http://localhost
 DB_HOST=mysql
 DB_DATABASE=cctv_exception_monitoring
 DB_USERNAME=cctv
 DB_PASSWORD=cctv
 DB_ROOT_PASSWORD=root
+FRONTEND_PORT=80
+BACKEND_PORT=8000
+PHPMYADMIN_PORT=8080
 ```
 
 Container backend otomatis menjalankan:
@@ -84,6 +89,41 @@ Untuk reset database Docker:
 docker compose down -v
 docker compose up --build
 ```
+
+## Deploy Lewat Portainer
+
+1. Buat repository GitHub berisi project ini.
+2. Di Portainer buka `Stacks`, pilih `Add stack`.
+3. Pilih sumber `Repository`, isi URL repo:
+
+```text
+https://github.com/HBBW/cctv-monitoring.git
+```
+
+4. Compose path isi:
+
+```text
+docker-compose.yml
+```
+
+5. Kalau server bukan laptop lokal, isi environment stack sesuai contoh `.env.portainer.example`.
+   Minimal sesuaikan:
+
+```env
+APP_URL=http://IP_SERVER:8000
+FRONTEND_URL=http://IP_SERVER
+VITE_API_URL=http://IP_SERVER:8000/api
+```
+
+6. Klik `Deploy the stack`.
+
+Setelah deploy:
+
+- Dashboard: `http://IP_SERVER`
+- API: `http://IP_SERVER:8000/api`
+- phpMyAdmin: `http://IP_SERVER:8080`
+
+Data MySQL disimpan di volume `mysql_data`, dan bukti foto disimpan di volume `backend_public_storage`.
 
 ## Fitur Utama
 
