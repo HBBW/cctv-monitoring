@@ -142,6 +142,19 @@ function App() {
     return reportBlob('daily', format, date)
   }
 
+  const selectedDay = Number(date.slice(8, 10))
+  const availableDays = daysInMonth(month)
+
+  function changeDashboardMonth(nextMonth) {
+    const day = Math.min(selectedDay || 1, daysInMonth(nextMonth).length)
+    setMonth(nextMonth)
+    setDate(`${nextMonth}-${String(day).padStart(2, '0')}`)
+  }
+
+  function changeDashboardDay(nextDay) {
+    setDate(`${month}-${String(nextDay).padStart(2, '0')}`)
+  }
+
   if (!auth) {
     return <LoginScreen onLogin={persistAuth} />
   }
@@ -180,7 +193,14 @@ function App() {
             <p>{date}</p>
           </div>
           <div className="toolbar">
-            {view !== 'reports' && <input type="date" value={date} onChange={(event) => setDate(event.target.value)} />}
+            {view !== 'reports' && (
+              <>
+                <input type="month" value={month} onChange={(event) => changeDashboardMonth(event.target.value)} />
+                <select value={selectedDay} onChange={(event) => changeDashboardDay(event.target.value)}>
+                  {availableDays.map((day) => <option key={day} value={day}>Tanggal {day}</option>)}
+                </select>
+              </>
+            )}
             <button className="icon-button" title="Muat ulang" onClick={loadAll}><RefreshCw size={18} /></button>
             {view !== 'reports' && <button className="button secondary" onClick={() => downloadReport('csv')}><Download size={16} /> CSV</button>}
             {view !== 'reports' && <button className="button secondary" onClick={() => downloadReport('pdf')}><Download size={16} /> PDF</button>}
@@ -243,7 +263,7 @@ function App() {
 }
 
 function LoginScreen({ onLogin }) {
-  const [form, setForm] = useState({ email: 'admin@cctv.local', password: 'password' })
+  const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -269,11 +289,6 @@ function LoginScreen({ onLogin }) {
         <label>Password<input type="password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} /></label>
         {error && <div className="form-error">{error}</div>}
         <button className="button primary" disabled={loading}>{loading ? 'Masuk...' : 'Masuk'}</button>
-        <div className="demo-users">
-          <span>admin@cctv.local</span>
-          <span>petugas@cctv.local</span>
-          <span>viewer@cctv.local</span>
-        </div>
       </form>
     </main>
   )
@@ -536,6 +551,16 @@ function CameraField({ label, file, onChange }) {
       stopCamera()
       setCameraError('')
       try {
+        if (!window.isSecureContext) {
+          setCameraError('Kamera diblok browser karena aplikasi dibuka lewat HTTP. Pakai HTTPS atau gunakan Pilih File.')
+          return
+        }
+
+        if (!navigator.mediaDevices?.getUserMedia) {
+          setCameraError('Browser tidak mendukung akses kamera di alamat ini. Gunakan Pilih File.')
+          return
+        }
+
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode },
           audio: false,
@@ -551,7 +576,7 @@ function CameraField({ label, file, onChange }) {
           videoRef.current.srcObject = stream
         }
       } catch {
-        setCameraError('Kamera tidak bisa dibuka. Coba izinkan akses kamera atau pakai pilih file.')
+        setCameraError('Kamera tidak bisa dibuka. Izinkan akses kamera, pakai HTTPS, atau gunakan Pilih File.')
       }
     }
 
@@ -993,6 +1018,12 @@ function formatMonthLabel(month) {
 
 function rangeHours(start, end) {
   return Array.from({ length: end - start }, (_, index) => start + index)
+}
+
+function daysInMonth(month) {
+  const [year, monthNumber] = month.split('-').map(Number)
+  const total = new Date(year, monthNumber, 0).getDate()
+  return Array.from({ length: total }, (_, index) => index + 1)
 }
 
 function sameHours(a, b) {
