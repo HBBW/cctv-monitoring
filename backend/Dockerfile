@@ -21,11 +21,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# --- BARIS INI WAJIB TAMBAHAN ---
-# Salin seluruh kodingan backend dari repo Git ke WORKDIR (/var/www/html)
 COPY . .
-# ---------------------------------
 
 COPY docker/entrypoint.sh /usr/local/bin/cctv-backend-entrypoint
 RUN chmod +x /usr/local/bin/cctv-backend-entrypoint
