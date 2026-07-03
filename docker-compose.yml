@@ -35,8 +35,8 @@ services:
       APP_ENV: ${APP_ENV:-production}
       APP_DEBUG: ${APP_DEBUG:-false}
       APP_KEY: ${APP_KEY:-}
-      APP_URL: ${APP_URL:-https://api-cctv.lab.bmc.co.id}
-      FRONTEND_URL: ${FRONTEND_URL:-https://cctv.lab.bmc.co.id}
+      APP_URL: ${APP_URL:-https://api-cctv.bmc.co.id}
+      FRONTEND_URL: ${FRONTEND_URL:-https://cctv.bmc.co.id}
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
