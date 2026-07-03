@@ -55,7 +55,7 @@ docker compose up --build
 
 Service yang tersedia:
 
-- Dashboard HTTPS: `https://lab.bmc.co.id`
+- Dashboard HTTPS via Nginx Proxy Manager: `https://cctv.lab.bmc.co.id`
 - Dashboard React: `http://localhost:3010`
 - API Laravel: `http://localhost:8010/api`
 - phpMyAdmin: `http://localhost:8586`
@@ -64,9 +64,8 @@ Service yang tersedia:
 Konfigurasi default Docker:
 
 ```env
-APP_URL=https://lab.bmc.co.id
-FRONTEND_URL=https://lab.bmc.co.id
-APP_DOMAIN=lab.bmc.co.id
+APP_URL=https://api-cctv.lab.bmc.co.id
+FRONTEND_URL=https://cctv.lab.bmc.co.id
 DB_HOST=mysql
 DB_DATABASE=cctv_exception_monitoring
 DB_USERNAME=cctv
@@ -76,10 +75,7 @@ FRONTEND_PORT=3010
 BACKEND_PORT=8010
 MYSQL_PORT=3310
 PHPMYADMIN_PORT=8586
-HTTP_PORT=8081
-HTTPS_PORT=443
-CADDY_TLS_MODE=internal
-VITE_API_URL=https://lab.bmc.co.id/api
+VITE_API_URL=https://api-cctv.lab.bmc.co.id/api
 ```
 
 Container backend otomatis menjalankan:
@@ -117,25 +113,29 @@ docker-compose.yml
    Minimal sesuaikan:
 
 ```env
-APP_URL=https://lab.bmc.co.id
-FRONTEND_URL=https://lab.bmc.co.id
-APP_DOMAIN=lab.bmc.co.id
-VITE_API_URL=https://lab.bmc.co.id/api
+APP_URL=https://api-cctv.lab.bmc.co.id
+FRONTEND_URL=https://cctv.lab.bmc.co.id
+VITE_API_URL=https://api-cctv.lab.bmc.co.id/api
 ```
 
 6. Klik `Deploy the stack`.
 
 Setelah deploy:
 
-- Dashboard HTTPS: `https://lab.bmc.co.id`
+- Dashboard HTTPS: `https://cctv.lab.bmc.co.id`
+- API HTTPS: `https://api-cctv.lab.bmc.co.id/api`
 - Dashboard HTTP langsung: `http://IP_SERVER:3010`
 - API langsung: `http://IP_SERVER:8010/api`
 - phpMyAdmin: `http://IP_SERVER:8586`
 
 Data MySQL disimpan di volume `mysql_data`, dan bukti foto disimpan di volume `backend_public_storage`.
 
-Catatan kamera browser: tombol kamera hanya dianggap aman oleh browser jika HTTPS memakai sertifikat tepercaya.
-Default stack memakai Caddy `tls internal`; agar kamera aktif tanpa warning, trust sertifikat internal Caddy di device yang dipakai atau pakai sertifikat publik Let's Encrypt dengan mengganti `CADDY_TLS_MODE` menjadi email admin domain.
+Untuk HTTPS host, gunakan Nginx Proxy Manager di server `10.19.25.29`:
+
+- `cctv.lab.bmc.co.id` -> `10.19.25.29:3010`
+- `api-cctv.lab.bmc.co.id` -> `10.19.25.29:8010`
+
+Pilih wildcard certificate pada masing-masing proxy host, lalu aktifkan `Force SSL` dan `HTTP/2 Support`.
 
 ## Fitur Utama
 
