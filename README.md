@@ -55,24 +55,25 @@ docker compose up --build
 
 Service yang tersedia:
 
-- Dashboard React: `http://localhost`
-- API Laravel: `http://localhost:8000/api`
-- phpMyAdmin: `http://localhost:8080`
-- MySQL: `localhost:3306`
+- Dashboard React: `http://localhost:3010`
+- API Laravel: `http://localhost:8010/api`
+- phpMyAdmin: `http://localhost:8586`
+- MySQL: `localhost:3310`
 
 Konfigurasi default Docker:
 
 ```env
-APP_URL=http://localhost:8000
-FRONTEND_URL=http://localhost
+APP_URL=http://localhost:8010
+FRONTEND_URL=http://localhost:3010
 DB_HOST=mysql
 DB_DATABASE=cctv_exception_monitoring
 DB_USERNAME=cctv
 DB_PASSWORD=cctv
 DB_ROOT_PASSWORD=root
-FRONTEND_PORT=80
-BACKEND_PORT=8000
-PHPMYADMIN_PORT=8080
+FRONTEND_PORT=3010
+BACKEND_PORT=8010
+MYSQL_PORT=3310
+PHPMYADMIN_PORT=8586
 ```
 
 Container backend otomatis menjalankan:
@@ -110,18 +111,18 @@ docker-compose.yml
    Minimal sesuaikan:
 
 ```env
-APP_URL=http://IP_SERVER:8000
-FRONTEND_URL=http://IP_SERVER
-VITE_API_URL=http://IP_SERVER:8000/api
+APP_URL=http://IP_SERVER:8010
+FRONTEND_URL=http://IP_SERVER:3010
+VITE_API_URL=http://IP_SERVER:8010/api
 ```
 
 6. Klik `Deploy the stack`.
 
 Setelah deploy:
 
-- Dashboard: `http://IP_SERVER`
-- API: `http://IP_SERVER:8000/api`
-- phpMyAdmin: `http://IP_SERVER:8080`
+- Dashboard: `http://IP_SERVER:3010`
+- API: `http://IP_SERVER:8010/api`
+- phpMyAdmin: `http://IP_SERVER:8586`
 
 Data MySQL disimpan di volume `mysql_data`, dan bukti foto disimpan di volume `backend_public_storage`.
 
