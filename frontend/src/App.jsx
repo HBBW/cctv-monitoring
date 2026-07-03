@@ -18,10 +18,19 @@ import {
 } from 'lucide-react'
 import './App.css'
 
-const API_URL = import.meta.env.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:8000/api`
+const API_URL = import.meta.env.VITE_API_URL || defaultApiUrl()
 const STORAGE_KEY = 'cctv_monitoring_auth'
 const today = new Date().toISOString().slice(0, 10)
 const currentMonth = today.slice(0, 7)
+
+function defaultApiUrl() {
+  const localHosts = ['localhost', '127.0.0.1']
+  if (localHosts.includes(window.location.hostname)) {
+    return `${window.location.protocol}//${window.location.hostname}:8000/api`
+  }
+
+  return `${window.location.origin}/api`
+}
 
 const issueTypes = [
   ['camera_offline', 'Kamera mati'],

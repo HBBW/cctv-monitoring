@@ -63,6 +63,24 @@ services:
     environment:
       VITE_API_URL: ${VITE_API_URL:-}
 
+  caddy:
+    image: caddy:2-alpine
+    container_name: cctv-monitoring-caddy
+    restart: always
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "${HTTP_PORT:-8081}:80"
+      - "${HTTPS_PORT:-443}:443"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-lab.bmc.co.id}
+      CADDY_TLS_MODE: ${CADDY_TLS_MODE:-internal}
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
   phpmyadmin:
     image: phpmyadmin:5
     container_name: cctv-monitoring-phpmyadmin
@@ -81,3 +99,5 @@ services:
 volumes:
   mysql_data:
   backend_public_storage:
+  caddy_data:
+  caddy_config:
