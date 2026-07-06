@@ -55,7 +55,7 @@ docker compose up --build
 
 Service yang tersedia:
 
-- Dashboard HTTPS via Nginx Proxy Manager: `https://cctv.bmc.co.id`
+- Dashboard HTTPS via Nginx Proxy Manager: `https://lab.bmc.co.id`
 - Dashboard React: `http://localhost:3010`
 - API Laravel: `http://localhost:8010/api`
 - phpMyAdmin: `http://localhost:8586`
@@ -65,7 +65,7 @@ Konfigurasi default Docker:
 
 ```env
 APP_URL=https://api-cctv.bmc.co.id
-FRONTEND_URL=https://cctv.bmc.co.id
+FRONTEND_URL=https://lab.bmc.co.id
 DB_HOST=mysql
 DB_DATABASE=cctv_exception_monitoring
 DB_USERNAME=cctv
@@ -114,7 +114,7 @@ docker-compose.yml
 
 ```env
 APP_URL=https://api-cctv.bmc.co.id
-FRONTEND_URL=https://cctv.bmc.co.id
+FRONTEND_URL=https://lab.bmc.co.id
 VITE_API_URL=https://api-cctv.bmc.co.id/api
 ```
 
@@ -122,7 +122,7 @@ VITE_API_URL=https://api-cctv.bmc.co.id/api
 
 Setelah deploy:
 
-- Dashboard HTTPS: `https://cctv.bmc.co.id`
+- Dashboard HTTPS: `https://lab.bmc.co.id`
 - API HTTPS: `https://api-cctv.bmc.co.id/api`
 - Dashboard HTTP langsung: `http://IP_SERVER:3010`
 - API langsung: `http://IP_SERVER:8010/api`
@@ -132,7 +132,7 @@ Data MySQL disimpan di volume `mysql_data`, dan bukti foto disimpan di volume `b
 
 Untuk HTTPS host, gunakan Nginx Proxy Manager di server `10.19.25.29`:
 
-- `cctv.bmc.co.id` -> `10.19.25.29:3010`
+- `lab.bmc.co.id` -> `10.19.25.29:3010`
 - `api-cctv.bmc.co.id` -> `10.19.25.29:8010`
 
 Pilih wildcard certificate pada masing-masing proxy host, lalu aktifkan `Force SSL` dan `HTTP/2 Support`.
