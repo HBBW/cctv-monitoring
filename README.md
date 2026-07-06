@@ -74,7 +74,7 @@ FRONTEND_PORT=3010
 BACKEND_PORT=8010
 MYSQL_PORT=3310
 PHPMYADMIN_PORT=8586
-VITE_API_URL=http://10.19.25.29:8010/api
+VITE_API_URL=
 ```
 
 Container backend otomatis menjalankan:
@@ -114,7 +114,7 @@ docker-compose.yml
 ```env
 APP_URL=http://10.19.25.29:8010
 FRONTEND_URL=http://10.19.25.29:3010
-VITE_API_URL=http://10.19.25.29:8010/api
+VITE_API_URL=
 ```
 
 6. Klik `Deploy the stack`.

@@ -29,6 +29,10 @@ function defaultApiUrl() {
     return `${window.location.protocol}//${window.location.hostname}:8000/api`
   }
 
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(window.location.hostname)) {
+    return `${window.location.protocol}//${window.location.hostname}:8010/api`
+  }
+
   return `${window.location.origin}/api`
 }
 
