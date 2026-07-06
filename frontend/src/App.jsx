@@ -16,6 +16,7 @@ import {
   Users,
   Wrench,
 } from 'lucide-react'
+import LoginScreen from './LoginScreen'
 import './App.css'
 
 const API_URL = import.meta.env.VITE_API_URL || defaultApiUrl()
@@ -169,7 +170,7 @@ function App() {
   }
 
   if (!auth) {
-    return <LoginScreen onLogin={persistAuth} />
+    return <LoginScreen apiUrl={API_URL} onLogin={persistAuth} />
   }
 
   return (
@@ -272,38 +273,6 @@ function App() {
       )}
       {selectedCheck && <CheckDetail check={selectedCheck} onClose={() => setSelectedCheck(null)} />}
     </div>
-  )
-}
-
-function LoginScreen({ onLogin }) {
-  const [form, setForm] = useState({ email: '', password: '' })
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  async function submit(event) {
-    event.preventDefault()
-    setLoading(true)
-    setError('')
-    try {
-      const response = await axios.post(`${API_URL}/auth/login`, form)
-      onLogin(response.data)
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login gagal.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <main className="login-page">
-      <form className="login-panel" onSubmit={submit}>
-        <div className="login-brand"><Camera size={34} /><span>CCTV Exception Monitoring</span></div>
-        <label>Email<input type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} /></label>
-        <label>Password<input type="password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} /></label>
-        {error && <div className="form-error">{error}</div>}
-        <button className="button primary" disabled={loading}>{loading ? 'Masuk...' : 'Masuk'}</button>
-      </form>
-    </main>
   )
 }
 
