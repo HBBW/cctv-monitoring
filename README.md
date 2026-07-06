@@ -55,17 +55,16 @@ docker compose up --build
 
 Service yang tersedia:
 
-- Dashboard HTTPS via Nginx Proxy Manager: `https://lab.bmc.co.id`
-- Dashboard React: `http://localhost:3010`
-- API Laravel: `http://localhost:8010/api`
-- phpMyAdmin: `http://localhost:8586`
-- MySQL: `localhost:3310`
+- Dashboard React: `http://10.19.25.29:3010`
+- API Laravel: `http://10.19.25.29:8010/api`
+- phpMyAdmin: `http://10.19.25.29:8586`
+- MySQL: `10.19.25.29:3310`
 
 Konfigurasi default Docker:
 
 ```env
-APP_URL=https://api-cctv.bmc.co.id
-FRONTEND_URL=https://lab.bmc.co.id
+APP_URL=http://10.19.25.29:8010
+FRONTEND_URL=http://10.19.25.29:3010
 DB_HOST=mysql
 DB_DATABASE=cctv_exception_monitoring
 DB_USERNAME=cctv
@@ -75,7 +74,7 @@ FRONTEND_PORT=3010
 BACKEND_PORT=8010
 MYSQL_PORT=3310
 PHPMYADMIN_PORT=8586
-VITE_API_URL=https://api-cctv.bmc.co.id/api
+VITE_API_URL=http://10.19.25.29:8010/api
 ```
 
 Container backend otomatis menjalankan:
@@ -113,29 +112,22 @@ docker-compose.yml
    Minimal sesuaikan:
 
 ```env
-APP_URL=https://api-cctv.bmc.co.id
-FRONTEND_URL=https://lab.bmc.co.id
-VITE_API_URL=https://api-cctv.bmc.co.id/api
+APP_URL=http://10.19.25.29:8010
+FRONTEND_URL=http://10.19.25.29:3010
+VITE_API_URL=http://10.19.25.29:8010/api
 ```
 
 6. Klik `Deploy the stack`.
 
 Setelah deploy:
 
-- Dashboard HTTPS: `https://lab.bmc.co.id`
-- API HTTPS: `https://api-cctv.bmc.co.id/api`
-- Dashboard HTTP langsung: `http://IP_SERVER:3010`
-- API langsung: `http://IP_SERVER:8010/api`
+- Dashboard: `http://10.19.25.29:3010`
+- API: `http://10.19.25.29:8010/api`
 - phpMyAdmin: `http://IP_SERVER:8586`
 
 Data MySQL disimpan di volume `mysql_data`, dan bukti foto disimpan di volume `backend_public_storage`.
 
-Untuk HTTPS host, gunakan Nginx Proxy Manager di server `10.19.25.29`:
-
-- `lab.bmc.co.id` -> `10.19.25.29:3010`
-- `api-cctv.bmc.co.id` -> `10.19.25.29:8010`
-
-Pilih wildcard certificate pada masing-masing proxy host, lalu aktifkan `Force SSL` dan `HTTP/2 Support`.
+Catatan: kamera browser hanya bisa dibuka langsung jika aplikasi berjalan lewat HTTPS tepercaya atau `localhost`. Jika masih memakai HTTP IP, gunakan tombol `Pilih File` untuk upload bukti.
 
 ## Fitur Utama
 
